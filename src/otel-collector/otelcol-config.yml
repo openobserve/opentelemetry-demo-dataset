@@ -128,10 +128,10 @@ exporters:
       site: datadoghq.com
   # OpenObserve exporter
   otlphttp/openobserve:
-    endpoint: https://introspection.dev.zinclabs.dev/api/test
+    endpoint: https://your-openobserve-instance/api/default
     headers:
-      Authorization: Basic aW50cm9zcGVjdGlvbnJvb3RAb3Blbm9ic2VydmUuYWk6MVpSZGoxRHdpRTVkN0tJVQ==
-      stream-name: otel-demo
+      Authorization: Basic <your-base64-encoded-credentials>
+      stream-name: default
 processors:
   memory_limiter:
     check_interval: 5s
