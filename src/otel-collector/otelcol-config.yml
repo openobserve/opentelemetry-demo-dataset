@@ -121,27 +121,17 @@ receivers:
             enabled: true
 exporters:
   debug:
-  otlp:
-    endpoint: "jaeger:4317"
-    tls:
-      insecure: true
-    sending_queue:
-      batch:
-  otlphttp/prometheus:
-    endpoint: "http://prometheus:9090/api/v1/otlp"
-    tls:
-      insecure: true
-    sending_queue:
-      batch:
-  opensearch:
-    logs_index: otel-logs
-    logs_index_time_format: "yyyy-MM-dd"
-    http:
-      endpoint: "http://opensearch:9200"
-      tls:
-        insecure: true
-    sending_queue:
-      batch:
+  # DataDog exporter
+  datadog:
+    api:
+      key: ${env:DD_API_KEY}
+      site: datadoghq.com
+  # OpenObserve exporter
+  otlphttp/openobserve:
+    endpoint: https://introspection.dev.zinclabs.dev/api/test
+    headers:
+      Authorization: Basic aW50cm9zcGVjdGlvbnJvb3RAb3Blbm9ic2VydmUuYWk6MVpSZGoxRHdpRTVkN0tJVQ==
+      stream-name: otel-demo
 processors:
   memory_limiter:
     check_interval: 5s
@@ -166,15 +156,15 @@ service:
     traces:
       receivers: [otlp]
       processors: [resourcedetection, memory_limiter, transform]
-      exporters: [otlp, debug, spanmetrics]
+      exporters: [debug, spanmetrics, datadog, otlphttp/openobserve]
     metrics:
       receivers: [docker_stats, httpcheck/frontend-proxy, hostmetrics, nginx, otlp, postgresql, redis, spanmetrics]
       processors: [resourcedetection, memory_limiter]
-      exporters: [otlphttp/prometheus, debug]
+      exporters: [debug, datadog, otlphttp/openobserve]
     logs:
       receivers: [otlp]
       processors: [resourcedetection, memory_limiter]
-      exporters: [opensearch, debug]
+      exporters: [debug, datadog, otlphttp/openobserve]
   telemetry:
     metrics:
       level: detailed
