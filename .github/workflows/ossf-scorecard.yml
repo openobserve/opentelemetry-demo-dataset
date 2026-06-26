@@ -22,7 +22,7 @@ jobs:
       # Needed for GitHub OIDC token if publish_results is true
       id-token: write
     steps:
-      - uses: actions/checkout@c2d88d3ecc89a9ef08eebf45d9637801dcee7eb5    # v5.0.1
+      - uses: actions/checkout@b9e0990d219a03df7633c93f6f005a8fecbcab22    # v5.0.1
         with:
           persist-credentials: false
 
@@ -36,7 +36,7 @@ jobs:
       # uploads of run results in SARIF format to the repository Actions tab.
       # https://docs.github.com/en/actions/advanced-guides/storing-workflow-data-as-artifacts
       - name: "Upload artifact"
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4    # v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a    # v7.0.1
         with:
           name: SARIF file
           path: results.sarif
@@ -45,6 +45,6 @@ jobs:
       # Upload the results to GitHub's code scanning dashboard (optional).
       # Commenting out will disable upload of results to your repo's Code Scanning dashboard
       - name: "Upload to code-scanning"
-        uses: github/codeql-action/upload-sarif@fdbfb4d2750291e159f0156def62b853c2798ca2    # v3.29.5
+        uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e    # v3.29.5
         with:
           sarif_file: results.sarif
